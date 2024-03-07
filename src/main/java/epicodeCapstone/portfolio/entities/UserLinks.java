@@ -1,9 +1,6 @@
 package epicodeCapstone.portfolio.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,4 +19,13 @@ public class UserLinks {
     private String title;
     private String url;
     private String imageUrl;
+    @ManyToOne
+    @JoinColumn(name = "user_info_id")
+    private UserInfo userInfo;
+
+    public UserLinks(String title, String url, String imageUrl) {
+        this.title = title;
+        this.url = url;
+        this.imageUrl = imageUrl;
+    }
 }
