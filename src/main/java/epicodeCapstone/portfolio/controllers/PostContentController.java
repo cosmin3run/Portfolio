@@ -18,15 +18,6 @@ public class PostContentController {
 @Autowired
 private PostContentService postContentService;
 
-
-
-
-
-
-
-
-
-
     @GetMapping
     public Page<PostContent> getAllPostContent(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "10") int size,
