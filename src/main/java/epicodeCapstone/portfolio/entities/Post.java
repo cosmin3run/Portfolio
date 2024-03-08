@@ -1,5 +1,6 @@
 package epicodeCapstone.portfolio.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.w3c.dom.stylesheets.LinkStyle;
@@ -28,6 +29,7 @@ public class Post {
     private List<PostContent> postsContent = new ArrayList<>();
 
     @ManyToOne
+    @JsonIgnore
     private UserInfo userInfo;
 
     private String mainImg;

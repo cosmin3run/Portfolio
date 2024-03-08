@@ -1,5 +1,6 @@
 package epicodeCapstone.portfolio.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import epicodeCapstone.portfolio.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
-
+@JsonIgnoreProperties({"password", "credentialsNonExpired", "accountNonExpired", "authorities", "accountNonLocked", "enabled"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue

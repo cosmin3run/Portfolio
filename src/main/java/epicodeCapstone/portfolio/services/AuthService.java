@@ -31,7 +31,7 @@ public class AuthService {
         } else if (userDAO.existsByEmail(payload.email())){
             throw new AlreadyExistsException("Email già registrata");
         } else {
-        User newUser = new User(payload.username(),payload.email(),bcrypt.encode(payload.password()), Role.USER);
+        User newUser = new User(payload.username(),payload.email(),bcrypt.encode(payload.password()), Role.VISITOR);
         return userDAO.save(newUser);
         }
     }

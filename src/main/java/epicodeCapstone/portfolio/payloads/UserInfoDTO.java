@@ -11,7 +11,6 @@ public record UserInfoDTO(
 
         @NotEmpty(message = "Il cognome è obbligatorio")
         String surname,
-        String avatar,
         User user,
         String descriptionTitle,
         String descriptionBody

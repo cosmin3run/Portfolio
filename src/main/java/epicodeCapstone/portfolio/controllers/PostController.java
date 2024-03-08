@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -40,11 +42,14 @@ public class PostController {
         return postService.updatePostById(id,payload);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable UUID id){ postService.deletePostById(id);}
 
-
+    @PostMapping("/upload")
+    public String uploadImage(@RequestParam("img") MultipartFile img, @RequestParam("id") UUID id) throws IOException {
+        return this.postService.uploadImg(img, id);
+    }
 
 
 

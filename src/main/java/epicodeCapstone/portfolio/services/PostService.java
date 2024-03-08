@@ -1,6 +1,7 @@
 package epicodeCapstone.portfolio.services;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import epicodeCapstone.portfolio.entities.Post;
 import epicodeCapstone.portfolio.exceptions.NotFoundException;
 import epicodeCapstone.portfolio.payloads.PostDTO;
@@ -12,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -38,6 +41,7 @@ public class PostService {
         Post newPost = new Post();
         newPost.setTitle(payload.title());
         newPost.setPublicationDate(payload.publicationDate());
+        newPost.setUserInfo(payload.userInfo());
         return postDAO.save(newPost);
     }
 
@@ -53,5 +57,11 @@ public class PostService {
         postDAO.delete(found);
     }
 
-
+    public String uploadImg(MultipartFile img, UUID id) throws IOException {
+        Post found = findById(id);
+        String url = (String) cloudinary.uploader().upload(img.getBytes(), ObjectUtils.emptyMap()).get("url");
+        found.setMainImg(url);
+        postDAO.save(found);
+        return url;
+    }
 }

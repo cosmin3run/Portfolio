@@ -1,5 +1,6 @@
 package epicodeCapstone.portfolio.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import epicodeCapstone.portfolio.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_info")
+
 public class UserInfo {
     @Id
     @GeneratedValue
@@ -25,6 +27,7 @@ public class UserInfo {
 
     @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "userInfo")

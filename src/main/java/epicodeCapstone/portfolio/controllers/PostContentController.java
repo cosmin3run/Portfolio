@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +37,7 @@ private PostContentService postContentService;
         return postContentService.savePostContent(payload);
     }
 
-    @PostMapping
+    @PostMapping("/{id}")
     public PostContent updateById(@PathVariable UUID id, @RequestBody PostContentDTO payload){
         return postContentService.findByIdAndUpdate(id, payload);
     }
@@ -43,4 +45,9 @@ private PostContentService postContentService;
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable UUID id){postContentService.deleteById(id);}
+
+    @PostMapping("/upload")
+    public String uploadAvatar(MultipartFile img, @RequestParam("id") UUID id) throws IOException {
+        return this.postContentService.uploadImg(img, id);
+    }
 }
