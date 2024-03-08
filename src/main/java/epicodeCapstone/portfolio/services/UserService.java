@@ -5,6 +5,7 @@ import epicodeCapstone.portfolio.entities.User;
 import epicodeCapstone.portfolio.enums.Role;
 import epicodeCapstone.portfolio.exceptions.NotFoundException;
 import epicodeCapstone.portfolio.payloads.UserDTO;
+import epicodeCapstone.portfolio.payloads.UserLinksDTO;
 import epicodeCapstone.portfolio.repositories.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class UserService {
 
     public void findByIdAndDelete(UUID id){
         User found = this.findById(id);
-        userDAO.save(found);
+        userDAO.delete(found);
     }
 
     public User findByIdAndUpdate(UUID id, UserDTO payload){
@@ -40,5 +41,7 @@ public class UserService {
         found.setPassword(payload.password());
         return userDAO.save(found);
     }
+
+
 
 }
