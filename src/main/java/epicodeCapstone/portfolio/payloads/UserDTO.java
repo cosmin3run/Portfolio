@@ -10,7 +10,7 @@ public record UserDTO(
         @NotEmpty(message = "Email è obbligatoria per la registrazione")
                 @Email(message = "Email non valida")
         String email,
-        @NotEmpty(message = "")
-        @Size(min = 3, max = 20, message = "Password must have at least 3 characters.")
+        @NotEmpty(message = "La password è obbligatoria")
+        @Size(min = 3, max = 20, message = "La password deve contenere almeno 3 caratteri")
         String password) {
 }

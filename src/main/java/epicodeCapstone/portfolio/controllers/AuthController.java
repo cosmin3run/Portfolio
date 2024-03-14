@@ -28,4 +28,6 @@ public class AuthController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody UserDTO payload){return this.authService.save(payload);}
+
+
 }
