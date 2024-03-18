@@ -1,4 +1,4 @@
-package epicodeCapstone.portfolio.payloads;
+package epicodeCapstone.portfolio.payloads.response;
 
 public record LoginResponseDTO(String accessToken) {
 }

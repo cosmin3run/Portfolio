@@ -1,6 +1,7 @@
 package epicodeCapstone.portfolio.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import epicodeCapstone.portfolio.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,9 +26,8 @@ public class UserInfo {
     private String surname;
     private String avatar;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
+    @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JsonIgnoreProperties("userInfo")
     private User user;
 
     @OneToMany(mappedBy = "userInfo")
@@ -42,5 +42,7 @@ public class UserInfo {
     @OneToMany(mappedBy = "userInfo")
     private List<Education> educations = new ArrayList<>();
 
-
+    public UserInfo(User user) {
+        this.user = user;
+    }
 }

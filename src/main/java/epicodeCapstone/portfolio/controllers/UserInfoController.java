@@ -1,10 +1,13 @@
 package epicodeCapstone.portfolio.controllers;
 
+import epicodeCapstone.portfolio.entities.User;
 import epicodeCapstone.portfolio.entities.UserInfo;
 import epicodeCapstone.portfolio.payloads.UserInfoDTO;
+import epicodeCapstone.portfolio.payloads.response.UserInfoResponseDTO;
 import epicodeCapstone.portfolio.services.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,10 +26,16 @@ public class UserInfoController {
         return userInfoService.findById(userInfoId);
     }
 
+    @GetMapping("/me")
+    public UserInfo getUserInfoMe(@AuthenticationPrincipal User user){
+        return userInfoService.findById(user.getId());
+    }
+
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserInfo saveUserInfo(@RequestBody UserInfoDTO newInfo){
-        return this.userInfoService.saveUserInfo(newInfo);
+    public UserInfoResponseDTO saveUserInfo(@RequestBody UserInfoDTO newInfo, @AuthenticationPrincipal User user){
+        return this.userInfoService.saveUserInfo(newInfo, user);
     }
 
     @PutMapping("/{id}")
@@ -34,7 +43,7 @@ public class UserInfoController {
         return this.userInfoService.findUserByIdAndUpdate(id, payload);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable UUID id){this.userInfoService.findByIdAndDelete(id);}
 

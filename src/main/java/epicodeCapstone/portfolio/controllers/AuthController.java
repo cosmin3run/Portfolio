@@ -1,7 +1,7 @@
 package epicodeCapstone.portfolio.controllers;
 
 import epicodeCapstone.portfolio.entities.User;
-import epicodeCapstone.portfolio.payloads.LoginResponseDTO;
+import epicodeCapstone.portfolio.payloads.response.LoginResponseDTO;
 import epicodeCapstone.portfolio.payloads.UserDTO;
 import epicodeCapstone.portfolio.payloads.UserLoginDTO;
 import epicodeCapstone.portfolio.services.AuthService;
