@@ -6,9 +6,12 @@ import java.util.UUID;
 
 public record UserInfoResponseDTO(
         UUID id,
-                                  String name,
+        String name,
 
-                                  String surname,
-                                  String descriptionTitle,
-                                  String descriptionBody) {
+        String surname,
+        String linkedin,
+        String github,
+        String instagram,
+        String descriptionTitle,
+        String descriptionBody) {
 }

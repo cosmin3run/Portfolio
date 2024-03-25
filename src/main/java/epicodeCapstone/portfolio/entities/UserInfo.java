@@ -25,15 +25,19 @@ public class UserInfo {
     private String name;
     private String surname;
     private String avatar;
+    private String linkedin;
+    private String github;
+    private String instagram;
 
     @OneToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JsonIgnoreProperties("userInfo")
     private User user;
 
-    @OneToMany(mappedBy = "userInfo")
-    private List<UserLinks> links = new ArrayList<>();
+//    @OneToMany(mappedBy = "userInfo")
+//    private List<UserLinks> links = new ArrayList<>();
 
     private String descriptionTitle;
+    @Column(columnDefinition = "TEXT")
     private String descriptionBody;
 
     @OneToMany(mappedBy = "userInfo")

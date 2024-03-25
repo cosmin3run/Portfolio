@@ -14,6 +14,10 @@ public record UserInfoDTO(
 
         @NotEmpty(message = "Il cognome è obbligatorio")
         String surname,
+
+        String linkedin,
+        String github,
+        String instagram,
         String descriptionTitle,
         String descriptionBody
 

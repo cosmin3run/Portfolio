@@ -9,9 +9,7 @@ import java.time.LocalDate;
 public record PostDTO(
         @NotEmpty(message = "Inserire titolo")
         String title,
-        @NotNull(message = "Inserire data di pubblicazione")
-        LocalDate publicationDate,
-        @NotNull
-        UserInfo userInfo
+
+        LocalDate publicationDate
 ) {
 }

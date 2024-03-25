@@ -1,16 +1,20 @@
 package epicodeCapstone.portfolio.controllers;
 
 import epicodeCapstone.portfolio.entities.Post;
+import epicodeCapstone.portfolio.entities.User;
 import epicodeCapstone.portfolio.payloads.PostDTO;
 import epicodeCapstone.portfolio.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -32,8 +36,8 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Post create(@RequestBody @Validated PostDTO payload){
-        return postService.savePost(payload);
+    public Post create(@RequestBody @Validated PostDTO payload, @AuthenticationPrincipal User user){
+        return postService.savePost(payload, user);
 
     }
 
@@ -47,9 +51,19 @@ public class PostController {
     public void deleteById(@PathVariable UUID id){ postService.deletePostById(id);}
 
     @PostMapping("/upload")
-    public String uploadImage(@RequestParam("img") MultipartFile img, @RequestParam("id") UUID id) throws IOException {
-        return this.postService.uploadImg(img, id);
+    public Map<String, String> uploadImage(@RequestParam("img") MultipartFile img, @RequestParam("id") UUID id) throws IOException {
+        String mainImageUrl = this.postService.uploadImg(img, id);
+        Map<String, String> resp = new HashMap<>();
+        resp.put("imageUrl", mainImageUrl);
+        return resp;
     }
+//    @PostMapping("/upload")
+//    public Map<String, String> uploadAvatar(@RequestParam("img") MultipartFile img, @AuthenticationPrincipal User user) throws IOException {
+//        String imageUrl = this.userInfoService.uploadImg(img, user);
+//        Map<String, String> response = new HashMap<>();
+//        response.put("imageUrl", imageUrl);
+//        return response;
+//    }
 
 
 

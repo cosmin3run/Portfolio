@@ -3,6 +3,7 @@ package epicodeCapstone.portfolio.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import epicodeCapstone.portfolio.entities.Post;
+import epicodeCapstone.portfolio.entities.User;
 import epicodeCapstone.portfolio.exceptions.NotFoundException;
 import epicodeCapstone.portfolio.payloads.PostDTO;
 import epicodeCapstone.portfolio.repositories.PostDAO;
@@ -37,11 +38,11 @@ public class PostService {
         return postDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public Post savePost(PostDTO payload){
+    public Post savePost(PostDTO payload, User user){
         Post newPost = new Post();
         newPost.setTitle(payload.title());
         newPost.setPublicationDate(payload.publicationDate());
-        newPost.setUserInfo(payload.userInfo());
+        newPost.setUserInfo(user.getUserInfo());
         return postDAO.save(newPost);
     }
 
