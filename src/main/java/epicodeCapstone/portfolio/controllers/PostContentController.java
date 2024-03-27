@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -31,6 +34,12 @@ private PostContentService postContentService;
     @GetMapping("/{id}")
     public PostContent getPostContentById(@PathVariable UUID id){ return postContentService.getPostContentById(id);}
 
+    @GetMapping("/post/{postId}")
+    public List<PostContent> getPostContentByPostId(@PathVariable UUID postId) {
+        return postContentService.findAllByPostId(postId);
+    }
+
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PostContent create(@RequestBody @Validated PostContentDTO payload){
@@ -47,7 +56,13 @@ private PostContentService postContentService;
     public void deleteById(@PathVariable UUID id){postContentService.deleteById(id);}
 
     @PostMapping("/upload")
-    public String uploadAvatar(MultipartFile img, @RequestParam("id") UUID id) throws IOException {
-        return this.postContentService.uploadImg(img, id);
+    public Map<String, String> uploadAvatar(@RequestParam("img") MultipartFile img, @RequestParam("id") UUID id) throws IOException {
+       String contentImg = this.postContentService.uploadImg(img, id);
+       Map<String, String> resp = new HashMap<>();
+       resp.put("contentImg", contentImg);
+        return resp;
     }
+
+
+   
 }

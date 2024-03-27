@@ -2,7 +2,10 @@ package epicodeCapstone.portfolio.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import epicodeCapstone.portfolio.entities.Post;
 import epicodeCapstone.portfolio.entities.PostContent;
+import epicodeCapstone.portfolio.entities.User;
+import epicodeCapstone.portfolio.entities.UserInfo;
 import epicodeCapstone.portfolio.exceptions.NotFoundException;
 import epicodeCapstone.portfolio.payloads.PostContentDTO;
 import epicodeCapstone.portfolio.repositories.PostContentDAO;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,6 +30,10 @@ public class PostContentService {
     PostContentDAO postContentDAO;
 
     @Autowired
+    PostService postService;
+
+
+    @Autowired
     Cloudinary cloudinary;
 
   public Page<PostContent> getAllPostContent(int page, int size, String orderBy){
@@ -33,7 +41,11 @@ public class PostContentService {
       return postContentDAO.findAll(pageable);
   }
 
-  public PostContent getPostContentById(UUID id){
+    public List<PostContent> findAllByPostId(UUID postId) {
+        return postContentDAO.findAllByPostId(postId);
+    }
+
+    public PostContent getPostContentById(UUID id){
       return postContentDAO.findById(id).orElseThrow(()->new NotFoundException(id));
 
   }
@@ -42,7 +54,7 @@ public class PostContentService {
       PostContent postContent = new PostContent();
       postContent.setTitle(payload.title());
       postContent.setContent(payload.content());
-      postContent.setPost(payload.post());
+      postContent.setPost(postService.findById(payload.postId()));
       return postContentDAO.save(postContent);
   }
 
@@ -59,7 +71,7 @@ public class PostContentService {
       PostContent found = this.getPostContentById(id);
       found.setTitle(payload.title());
       found.setContent(payload.content());
-      found.setPost(payload.post());
+      found.setPost(postService.findById(payload.postId()));
      return postContentDAO.save(found);
   }
 
