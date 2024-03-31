@@ -3,10 +3,13 @@ package epicodeCapstone.portfolio.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import epicodeCapstone.portfolio.entities.Post;
+import epicodeCapstone.portfolio.entities.PostContent;
 import epicodeCapstone.portfolio.entities.User;
+import epicodeCapstone.portfolio.entities.UserInfo;
 import epicodeCapstone.portfolio.exceptions.NotFoundException;
 import epicodeCapstone.portfolio.payloads.PostDTO;
 import epicodeCapstone.portfolio.repositories.PostDAO;
+import epicodeCapstone.portfolio.repositories.UserInfoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,12 +20,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class PostService {
     @Autowired
     private PostDAO postDAO;
+
+    @Autowired
+    private UserInfoDAO userInfoDAO;
 
     @Autowired
     Cloudinary cloudinary;
@@ -36,6 +43,13 @@ public class PostService {
 
     public Post getPostById(UUID id){
         return postDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
+    }
+
+    public List<Post> findAllByUserInfoId(UUID userInfoId) {
+        return postDAO.findAllByUserInfoId(userInfoId);
+    }
+    public List<Post> getPostByInfo(UserInfo userInfo){
+        return postDAO.findByUserInfo(userInfo);
     }
 
     public Post savePost(PostDTO payload, User user){

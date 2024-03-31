@@ -66,16 +66,23 @@ public class UserInfoService {
 
         User changeRole = userDAO.findById(user.getId()).get();
         changeRole.setRole(Role.USER);
-        UserInfo newInfo = new UserInfo(changeRole);
-
-        newInfo.setAvatar("https://ui-avatars.com/api/?name=" + newInfo.getName().charAt(0) + newInfo.getSurname().charAt(0));
+            userDAO.save(changeRole);
+            System.out.println("changerole"+changeRole);
+        UserInfo newInfo = new UserInfo();
+        System.out.println("newinfo"+newInfo);
+        System.out.println("payload"+payload);
         newInfo.setName(payload.name());
         newInfo.setSurname(payload.surname());
         newInfo.setDescriptionBody(payload.descriptionBody());
         newInfo.setDescriptionTitle(payload.descriptionTitle());
+        newInfo.setUser(changeRole);
+        newInfo.setAvatar("https://ui-avatars.com/api/?name=" + newInfo.getName().charAt(0) + newInfo.getSurname().charAt(0));
+        System.out.println(payload);
          userInfoDAO.save(newInfo);
+        System.out.println("postSave"+newInfo);
         return new UserInfoResponseDTO(newInfo.getId(), newInfo.getName(), newInfo.getSurname(), newInfo.getLinkedin(), newInfo.getGithub(),newInfo.getInstagram(), newInfo.getDescriptionTitle(), newInfo.getDescriptionBody());
     }}
+
 
     public UserInfo findUserByIdAndUpdate(UUID id, UserInfoDTO payload){
         UserInfo found = this.findById(id);

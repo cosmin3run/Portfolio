@@ -21,11 +21,12 @@ public class PostContent {
     @GeneratedValue
     private UUID id;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private String image;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post")
     private Post post;
 

@@ -1,6 +1,7 @@
 package epicodeCapstone.portfolio.controllers;
 
 import epicodeCapstone.portfolio.entities.Post;
+import epicodeCapstone.portfolio.entities.PostContent;
 import epicodeCapstone.portfolio.entities.User;
 import epicodeCapstone.portfolio.payloads.PostDTO;
 import epicodeCapstone.portfolio.services.PostService;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -33,6 +35,13 @@ public class PostController {
 
     @GetMapping("/{id}")
     public Post getPostById(@PathVariable UUID id){return postService.getPostById(id);}
+
+    @GetMapping("/user/{userInfoId}")
+    public List<Post> getPostsByUserInfoId(@PathVariable UUID userInfoId) {
+        return postService.findAllByUserInfoId(userInfoId);
+    }
+    @GetMapping("/me")
+    public List<Post> getPostByInfoId(@AuthenticationPrincipal User user){return postService.getPostByInfo(user.getUserInfo());}
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -43,8 +43,8 @@ public class UserInfo {
     @OneToMany(mappedBy = "userInfo")
     private List<Post> post = new ArrayList<>();
 
-    @OneToMany(mappedBy = "userInfo")
-    private List<Education> educations = new ArrayList<>();
+//    @OneToMany(mappedBy = "userInfo")
+//    private List<Education> educations = new ArrayList<>();
 
     public UserInfo(User user) {
         this.user = user;

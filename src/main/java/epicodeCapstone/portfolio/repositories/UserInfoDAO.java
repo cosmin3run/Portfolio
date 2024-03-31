@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface UserInfoDAO extends JpaRepository<UserInfo, UUID> {
     Optional<UserInfo> findByUser(User user);
 
+
 }
