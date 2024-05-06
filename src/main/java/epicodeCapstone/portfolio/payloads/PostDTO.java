@@ -10,6 +10,7 @@ public record PostDTO(
         @NotEmpty(message = "Inserire titolo")
         String title,
 
-        LocalDate publicationDate
+        LocalDate publicationDate,
+        String imageId
 ) {
 }

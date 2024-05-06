@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -69,14 +71,32 @@ public class PostService {
 
     public void deletePostById(UUID id){
         Post found = getPostById(id);
+        String publicId = found.getImageId();
+        if (publicId != null) {
+            try {
+                // Cancella l'immagine da Cloudinary utilizzando il publicId
+                cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            } catch (IOException e) {
+                // Gestisci l'eccezione in modo opportuno, ad esempio stampando un messaggio di errore
+                System.err.println("Errore durante la cancellazione dell'immagine da Cloudinary: " + e.getMessage());
+            }
+        }
         postDAO.delete(found);
     }
 
-    public String uploadImg(MultipartFile img, UUID id) throws IOException {
+    public Map<?,?> uploadImg(MultipartFile img, UUID id) throws IOException {
         Post found = findById(id);
-        String url = (String) cloudinary.uploader().upload(img.getBytes(), ObjectUtils.emptyMap()).get("url");
+        Map<?,?> uploadResult = cloudinary.uploader().upload(img.getBytes(), ObjectUtils.emptyMap());
+        String url = (String) uploadResult.get("url");
+        String publicId = (String) uploadResult.get("public_id");
+        System.out.println("Id immagine ="+publicId);
+
         found.setMainImg(url);
+        found.setImageId(publicId);
         postDAO.save(found);
-        return url;
+//        Map<String, String> uploaded = new HashMap<>();
+//        uploaded.put("url", url);
+//        uploaded.put("publicId", publicId);
+        return uploadResult;
     }
 }

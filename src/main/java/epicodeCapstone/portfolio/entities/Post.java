@@ -35,6 +35,7 @@ public class Post {
     private UserInfo userInfo;
 
     private String mainImg;
+    private String imageId;
 
 
 }

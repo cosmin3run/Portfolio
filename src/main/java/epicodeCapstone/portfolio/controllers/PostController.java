@@ -8,6 +8,7 @@ import epicodeCapstone.portfolio.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -45,26 +46,28 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('USER')")
     public Post create(@RequestBody @Validated PostDTO payload, @AuthenticationPrincipal User user){
         return postService.savePost(payload, user);
 
     }
 
     @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER')")
     public Post updateById(@PathVariable UUID id, @RequestBody PostDTO payload){
         return postService.updatePostById(id,payload);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable UUID id){ postService.deletePostById(id);}
 
     @PostMapping("/upload")
-    public Map<String, String> uploadImage(@RequestParam("img") MultipartFile img, @RequestParam("id") UUID id) throws IOException {
-        String mainImageUrl = this.postService.uploadImg(img, id);
-        Map<String, String> resp = new HashMap<>();
-        resp.put("imageUrl", mainImageUrl);
-        return resp;
+    @PreAuthorize("hasAuthority('USER')")
+    public Map<?,?> uploadImage(@RequestParam("img") MultipartFile img, @RequestParam("id") UUID id) throws IOException {
+
+        return this.postService.uploadImg(img, id);
     }
 //    @PostMapping("/upload")
 //    public Map<String, String> uploadAvatar(@RequestParam("img") MultipartFile img, @AuthenticationPrincipal User user) throws IOException {
